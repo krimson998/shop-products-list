@@ -1,24 +1,31 @@
 <template>
-  <div class="card">
-    <img
-      class="product-img"
-      src="https://via.placeholder.com/150/92c952"
-      alt="product"
-    />
-    <div class="product-title">
-      accusamus beatae ad facilis cum similique qui sunt
+  <div class="card-wrapper">
+    <div class="card">
+      <img class="product-img" :src="imgURL" alt="product" />
+      <div class="product-title">
+        {{ title }}
+      </div>
+      <button class="buy-button">Buy</button>
     </div>
-    <button class="buy-button">Buy</button>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    imgURL: String,
+    title: String,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
+.card-wrapper {
+  margin-bottom: 2rem;
+}
 .card {
   width: 200px;
+  position: relative;
   height: 100%;
   margin-right: 1rem;
   margin-left: 1rem;
@@ -28,7 +35,6 @@ export default {};
   display: flex;
   flex-direction: column;
   padding-bottom: 1rem;
-  margin-bottom: 2rem;
 }
 .product-img {
   width: 150px;

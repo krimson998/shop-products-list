@@ -3,22 +3,20 @@
     <NavBar />
     <div class="wrapper">
       <div class="items-container">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+        <ProductCard
+          v-for="(product, index) in productsList"
+          :key="index"
+          :title="product.title"
+          :imgURL="product.thumbnailUrl"
+        >
+        </ProductCard>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import NavBar from './components/NavBar.vue';
 import ProductCard from './components/ProductCard.vue';
 export default {
@@ -27,6 +25,20 @@ export default {
     NavBar,
   },
   name: 'App',
+
+  data() {
+    return {
+      productsList: [],
+    };
+  },
+  mounted() {
+    axios
+      .get('https://jsonplaceholder.typicode.com/photos')
+      .then((response) => {
+        this.productsList = response.data.slice(0, 50);
+        console.log(this.productsList);
+      });
+  },
 };
 </script>
 
