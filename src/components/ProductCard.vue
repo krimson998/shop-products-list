@@ -1,22 +1,56 @@
 <template>
   <div class="card-wrapper">
     <div class="card">
-      <img class="product-img" :src="imgURL" alt="product" />
+      <img class="product-img" :src="imgURL" :alt="altGenerator" />
       <div class="product-title">
         {{ title }}
         {{ id }}
       </div>
-      <button class="button">Buy</button>
+      <button
+        :disabled="inCart"
+        @click="buy"
+        :class="{
+          'active-btn': !inCart,
+          'disabled-btn': inCart,
+        }"
+      >
+        <span v-show="!isClicked">{{ buttonText }}</span
+        ><span v-show="isClicked" class="loader"></span>
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
+  data() {
+    return {
+      buttonText: 'Buy',
+      isClicked: false,
+      inCart: false,
+    };
+  },
   props: {
     imgURL: String,
     title: String,
     id: Number,
+  },
+  methods: {
+    buy() {
+      this.isClicked = true;
+      axios.get('https://reqres.in/api/products/3').then((response) => {
+        console.log(response.data);
+        this.buttonText = 'Product in cart';
+        this.isClicked = false;
+        this.inCart = true;
+      });
+    },
+  },
+  computed: {
+    altGenerator() {
+      return `Product #${this.id}`;
+    },
   },
 };
 </script>
@@ -43,24 +77,6 @@ export default {
     padding-top: 1rem;
     margin: auto;
   }
-  button {
-    background-color: #4299e1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 30px;
-    width: 80%;
-    user-select: none;
-    cursor: pointer;
-    border-radius: 4px;
-    border: 0 solid #000;
-    color: white;
-    font-size: 1rem;
-    margin: auto;
-    &:hover {
-      background-color: #2b6cb0;
-    }
-  }
   div {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -70,5 +86,43 @@ export default {
     font-size: 0.875rem;
     min-height: 70px;
   }
+}
+.loader {
+  width: 15px;
+  height: 15px;
+}
+.active-btn {
+  background-color: #4299e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 80%;
+  user-select: none;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 0 solid #000;
+  color: white;
+  font-size: 1rem;
+  margin: auto;
+  &:hover {
+    background-color: #2b6cb0;
+  }
+}
+.disabled-btn {
+  background-color: #63b3ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 80%;
+  user-select: none;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 0 solid #000;
+  color: white;
+  font-size: 1rem;
+  margin: auto;
+  cursor: default;
 }
 </style>
