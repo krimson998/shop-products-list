@@ -4,10 +4,11 @@
     <div class="wrapper">
       <div class="items-container">
         <ProductCard
-          v-for="(product, index) in productsList"
-          :key="index"
+          v-for="product in productsList"
+          :key="product.id"
           :title="product.title"
           :imgURL="product.thumbnailUrl"
+          :id="product.id"
         >
         </ProductCard>
       </div>
@@ -29,15 +30,48 @@ export default {
   data() {
     return {
       productsList: [],
+      startListItem: 50,
+      endListItem: 100,
+      newList: [],
     };
   },
   mounted() {
+    this.scroll();
     axios
       .get('https://jsonplaceholder.typicode.com/photos')
       .then((response) => {
         this.productsList = response.data.slice(0, 50);
         console.log(this.productsList);
       });
+  },
+  methods: {
+    scroll() {
+      window.onscroll = () => {
+        let bottomOfWindow =
+          Math.max(
+            window.pageYOffset,
+            document.documentElement.scrollTop,
+            document.body.scrollTop
+          ) +
+            window.innerHeight ===
+          document.documentElement.offsetHeight;
+
+        if (bottomOfWindow) {
+          axios
+            .get('https://jsonplaceholder.typicode.com/photos')
+            .then((response) => {
+              this.newList = response.data.slice(
+                this.startListItem,
+                this.endListItem
+              );
+              this.productsList = [...this.productsList, ...this.newList];
+              this.startListItem += 50;
+              this.endListItem += 50;
+              console.log(this.productsList);
+            });
+        }
+      };
+    },
   },
 };
 </script>
