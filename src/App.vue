@@ -1,17 +1,22 @@
 <template>
-  <div id="app">
-    <NavBar />
-    <div class="wrapper">
-      <div class="items-container">
-        <ProductCard
-          v-for="product in productsList"
-          :key="product.id"
-          :title="product.title"
-          :imgURL="product.thumbnailUrl"
-          :id="product.id"
-        >
-        </ProductCard>
+  <div class="app">
+    <div>
+      <NavBar />
+      <div class="wrapper">
+        <div class="items-container">
+          <ProductCard
+            v-for="product in productsList"
+            :key="product.id"
+            :title="product.title"
+            :imgURL="product.thumbnailUrl"
+            :id="product.id"
+          >
+          </ProductCard>
+        </div>
       </div>
+    </div>
+    <div class="loader-container" v-show="showLoader">
+      <span class="loader"></span>
     </div>
   </div>
 </template>
@@ -25,7 +30,6 @@ export default {
     ProductCard,
     NavBar,
   },
-  name: 'App',
 
   data() {
     return {
@@ -33,6 +37,7 @@ export default {
       startListItem: 50,
       endListItem: 100,
       newList: [],
+      showLoader: false,
     };
   },
   mounted() {
@@ -55,6 +60,7 @@ export default {
           ) +
             window.innerHeight ===
           document.documentElement.offsetHeight;
+        this.showLoader = bottomOfWindow;
 
         if (bottomOfWindow) {
           axios
@@ -82,6 +88,10 @@ body {
   margin: 0;
   font-family: 'Inter', sans-serif;
 }
+.app {
+  display: flex;
+  flex-direction: column;
+}
 .items-container {
   width: 90%;
   height: 100%;
@@ -97,5 +107,29 @@ body {
   margin: auto;
   display: flex;
   justify-content: center;
+  padding-bottom: 2rem;
+}
+.loader-container {
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  padding-bottom: 3rem;
+}
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  animation: spin 2s linear infinite;
+  display: inline-block;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

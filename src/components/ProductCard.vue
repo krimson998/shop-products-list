@@ -6,7 +6,7 @@
         {{ title }}
         {{ id }}
       </div>
-      <button class="buy-button">Buy</button>
+      <button class="button">Buy</button>
     </div>
   </div>
 </template>
@@ -44,8 +44,7 @@ export default {
     margin: auto;
   }
   button {
-    background-color: #0093e9;
-    background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+    background-color: #4299e1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -58,6 +57,9 @@ export default {
     color: white;
     font-size: 1rem;
     margin: auto;
+    &:hover {
+      background-color: #2b6cb0;
+    }
   }
   div {
     padding-top: 0.5rem;
