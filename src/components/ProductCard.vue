@@ -5,6 +5,7 @@
       <div class="product-title">
         {{ title }}
         {{ id }}
+        {{ itemInCart }}
       </div>
       <button
         :disabled="inCart"
@@ -24,27 +25,49 @@
 <script>
 import axios from 'axios';
 export default {
+  props: {
+    imgURL: String,
+    title: String,
+    id: Number,
+    itemInCart: Boolean,
+  },
   data() {
     return {
       buttonText: 'Buy',
       isClicked: false,
       inCart: false,
+      cart: {
+        items: [],
+      },
     };
   },
-  props: {
-    imgURL: String,
-    title: String,
-    id: Number,
+  mounted() {
+    this.cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (this.isCartItem()) {
+      this.buttonText = 'Product in cart';
+      this.isClicked = false;
+      this.inCart = true;
+    }
   },
   methods: {
     buy() {
       this.isClicked = true;
+      console.log(this.id);
       axios.get('https://reqres.in/api/products/3').then((response) => {
         console.log(response.data);
         this.buttonText = 'Product in cart';
         this.isClicked = false;
         this.inCart = true;
       });
+      this.saveItem();
+    },
+    saveItem() {
+      this.cart = JSON.parse(localStorage.getItem('cart')) || [];
+      localStorage.setItem('cart', JSON.stringify([...this.cart, this.id]));
+    },
+    isCartItem() {
+      const a = this.cart.some((i) => i === this.id);
+      return a;
     },
   },
   computed: {

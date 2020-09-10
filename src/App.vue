@@ -10,6 +10,7 @@
             :title="product.title"
             :imgURL="product.thumbnailUrl"
             :id="product.id"
+            :itemInCart="itemInCart"
           >
           </ProductCard>
         </div>
@@ -38,6 +39,7 @@ export default {
       endListItem: 100,
       newList: [],
       showLoader: false,
+      itemInCart: false,
     };
   },
   mounted() {
@@ -47,6 +49,9 @@ export default {
       .then((response) => {
         this.productsList = response.data.slice(0, 50);
         console.log(this.productsList);
+      })
+      .catch((e) => {
+        return e;
       });
   },
   methods: {
@@ -71,6 +76,7 @@ export default {
                 this.endListItem
               );
               this.productsList = [...this.productsList, ...this.newList];
+
               this.startListItem += 50;
               this.endListItem += 50;
               console.log(this.productsList);
