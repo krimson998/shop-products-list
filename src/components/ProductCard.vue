@@ -53,12 +53,17 @@ export default {
     buy() {
       this.isClicked = true;
       console.log(this.id);
-      axios.get('https://reqres.in/api/products/3').then((response) => {
-        console.log(response.data);
-        this.buttonText = 'Product in cart';
-        this.isClicked = false;
-        this.inCart = true;
-      });
+      axios
+        .get('https://reqres.in/api/products/3')
+        .then((response) => {
+          console.log(response.data);
+          this.buttonText = 'Product in cart';
+          this.isClicked = false;
+          this.inCart = true;
+        })
+        .catch((e) => {
+          return e;
+        });
       this.saveItem();
     },
     saveItem() {

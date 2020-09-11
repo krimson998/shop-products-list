@@ -76,10 +76,12 @@ export default {
                 this.endListItem
               );
               this.productsList = [...this.productsList, ...this.newList];
-
               this.startListItem += 50;
               this.endListItem += 50;
               console.log(this.productsList);
+            })
+            .catch((e) => {
+              return e;
             });
         }
       };
@@ -101,12 +103,12 @@ body {
 .items-container {
   width: 90%;
   height: 100%;
-  margin: auto;
+
   padding-top: 4rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: start;
+  justify-content: center;
 }
 .wrapper {
   width: 90%;
