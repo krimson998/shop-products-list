@@ -5,7 +5,6 @@
       <div class="product-title">
         {{ title }}
         {{ id }}
-        {{ itemInCart }}
       </div>
       <button
         :disabled="inCart"
@@ -29,7 +28,6 @@ export default {
     imgURL: String,
     title: String,
     id: Number,
-    itemInCart: Boolean,
   },
   data() {
     return {
@@ -84,6 +82,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$default-space: 1rem;
 .card-wrapper {
   margin-bottom: 2rem;
 }
@@ -91,18 +90,18 @@ export default {
   width: 200px;
   position: relative;
   height: 100%;
-  margin-right: 1rem;
-  margin-left: 1rem;
+  margin-right: $default-space;
+  margin-left: $default-space;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
   border-radius: 0.25rem;
   display: flex;
   flex-direction: column;
-  padding-bottom: 1rem;
+  padding-bottom: $default-space;
   img {
     width: 150px;
     height: 150px;
-    padding-top: 1rem;
+    padding-top: $default-space;
     margin: auto;
   }
   div {
@@ -131,9 +130,9 @@ export default {
   border-radius: 4px;
   border: 0 solid #000;
   color: white;
-  font-size: 1rem;
+  font-size: $default-space;
   margin: auto;
-  &:hover {
+  outline:none &:hover {
     background-color: #2b6cb0;
   }
 }
@@ -149,8 +148,9 @@ export default {
   border-radius: 4px;
   border: 0 solid #000;
   color: white;
-  font-size: 1rem;
+  font-size: $default-space;
   margin: auto;
   cursor: default;
+  outline: none;
 }
 </style>

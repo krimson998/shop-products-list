@@ -10,7 +10,6 @@
             :title="product.title"
             :imgURL="product.thumbnailUrl"
             :id="product.id"
-            :itemInCart="itemInCart"
           >
           </ProductCard>
         </div>
@@ -23,7 +22,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { getFirstList, getNextList } from './services/index.js';
 import NavBar from './components/NavBar.vue';
 import ProductCard from './components/ProductCard.vue';
 export default {
@@ -39,20 +38,12 @@ export default {
       endListItem: 100,
       newList: [],
       showLoader: false,
-      itemInCart: false,
     };
   },
-  mounted() {
+  async mounted() {
     this.scroll();
-    axios
-      .get('https://jsonplaceholder.typicode.com/photos')
-      .then((response) => {
-        this.productsList = response.data.slice(0, 50);
-        console.log(this.productsList);
-      })
-      .catch((e) => {
-        return e;
-      });
+    this.productsList = await getFirstList();
+    console.log(this.productsList);
   },
   methods: {
     scroll() {
@@ -68,21 +59,15 @@ export default {
         this.showLoader = bottomOfWindow;
 
         if (bottomOfWindow) {
-          axios
-            .get('https://jsonplaceholder.typicode.com/photos')
-            .then((response) => {
-              this.newList = response.data.slice(
-                this.startListItem,
-                this.endListItem
-              );
-              this.productsList = [...this.productsList, ...this.newList];
-              this.startListItem += 50;
-              this.endListItem += 50;
-              console.log(this.productsList);
-            })
-            .catch((e) => {
-              return e;
-            });
+          const refresh = async () => {
+            this.productsList = [
+              ...this.productsList,
+              ...(await getNextList(this.startListItem, this.endListItem)),
+            ];
+            this.startListItem += 50;
+            this.endListItem += 50;
+          };
+          refresh();
         }
       };
     },
@@ -92,6 +77,7 @@ export default {
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+$container-width: 90%;
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -101,7 +87,7 @@ body {
   flex-direction: column;
 }
 .items-container {
-  width: 90%;
+  width: $container-width;
   height: 100%;
 
   padding-top: 4rem;
@@ -111,7 +97,7 @@ body {
   justify-content: center;
 }
 .wrapper {
-  width: 90%;
+  width: $container-width;
   margin: auto;
   display: flex;
   justify-content: center;
