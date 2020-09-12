@@ -57,10 +57,10 @@ export default {
           ) +
             window.innerHeight ===
           document.documentElement.offsetHeight;
-        this.showLoader = bottomOfWindow;
 
         if (bottomOfWindow) {
           /* Если юзер находится снизу страницы, происходит запрос на следующие 50 продуктов */
+          this.showLoader = true;
           const newItems = async () => {
             this.productsList = [
               ...this.productsList,
@@ -68,6 +68,7 @@ export default {
             ];
             this.startListItem += 50;
             this.endListItem += 50;
+            this.showLoader = false;
           };
           newItems();
         }
