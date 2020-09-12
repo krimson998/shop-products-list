@@ -49,11 +49,13 @@ export default {
     }
   },
   methods: {
-    buy() {
+    async buy() {
       this.isClicked = true;
+      console.log(this.buttonText);
       console.log(this.id);
-      buyMockupRequest();
+      await buyMockupRequest();
       this.buttonText = 'Product in cart';
+      console.log(this.buttonText);
       this.isClicked = false;
       this.inCart = true;
       this.saveItem();
