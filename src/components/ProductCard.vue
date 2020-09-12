@@ -40,6 +40,7 @@ export default {
     };
   },
   mounted() {
+    /* Проверка на наличие и присвоение корзины из localstorage */
     this.cart = JSON.parse(localStorage.getItem('cart')) || [];
     if (this.isCartItem()) {
       this.buttonText = 'Product in cart';
@@ -64,16 +65,19 @@ export default {
         });
       this.saveItem();
     },
+    /* Сохранение корзины в localstorage */
     saveItem() {
       this.cart = JSON.parse(localStorage.getItem('cart')) || [];
       localStorage.setItem('cart', JSON.stringify([...this.cart, this.id]));
     },
+    /* Проверка на наличие объекта в корзине */
     isCartItem() {
       const a = this.cart.some((i) => i === this.id);
       return a;
     },
   },
   computed: {
+    /* Генерация уникального alt-a для каждого объекта */
     altGenerator() {
       return `Product #${this.id}`;
     },
@@ -132,9 +136,10 @@ $default-space: 1rem;
   color: white;
   font-size: $default-space;
   margin: auto;
-  outline:none &:hover {
+  &:hover {
     background-color: #2b6cb0;
   }
+  outline: none;
 }
 .disabled-btn {
   background-color: #63b3ed;

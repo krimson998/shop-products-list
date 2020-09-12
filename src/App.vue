@@ -4,6 +4,7 @@
       <NavBar />
       <div class="wrapper">
         <div class="items-container">
+          <!-- Передача всех данных в компонент -->
           <ProductCard
             v-for="product in productsList"
             :key="product.id"
@@ -22,6 +23,7 @@
 </template>
 
 <script>
+/* ajax функции для получения данных */
 import { getFirstList, getNextList } from './services/index.js';
 import NavBar from './components/NavBar.vue';
 import ProductCard from './components/ProductCard.vue';
@@ -36,16 +38,15 @@ export default {
       productsList: [],
       startListItem: 50,
       endListItem: 100,
-      newList: [],
       showLoader: false,
     };
   },
   async mounted() {
     this.scroll();
     this.productsList = await getFirstList();
-    console.log(this.productsList);
   },
   methods: {
+    /* Функция которая детектит когда юзер скролит к нижнему значению страницы и возвращает true */
     scroll() {
       window.onscroll = () => {
         let bottomOfWindow =
@@ -59,7 +60,8 @@ export default {
         this.showLoader = bottomOfWindow;
 
         if (bottomOfWindow) {
-          const refresh = async () => {
+          /* Если юзер находится снизу страницы, происходит запрос на следующие 50 продуктов */
+          const newItems = async () => {
             this.productsList = [
               ...this.productsList,
               ...(await getNextList(this.startListItem, this.endListItem)),
@@ -67,7 +69,7 @@ export default {
             this.startListItem += 50;
             this.endListItem += 50;
           };
-          refresh();
+          newItems();
         }
       };
     },
