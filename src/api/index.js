@@ -7,8 +7,8 @@ export const getFirstList = async () => {
     /* Получение первых 50 продуктов из всего массива */
     const firstList = response.data.slice(0, 50);
     return firstList;
-  } catch (error) {
-    throw new Error(error);
+  } catch (e) {
+    throw new Error(e);
   }
 };
 export const getNextList = async (startListItem, endListItem) => {
@@ -19,7 +19,15 @@ export const getNextList = async (startListItem, endListItem) => {
     /* Получение следующих 50 продуктов из массива */
     const newList = await response.data.slice(startListItem, endListItem);
     return newList;
-  } catch (error) {
-    throw new Error(error);
+  } catch (e) {
+    throw new Error(e);
   }
+};
+
+export const buyMockupRequest = async () => {
+  const res = await axios.get('https://reqres.in/api/products/3').catch((e) => {
+    return e;
+  });
+
+  console.log(res.data);
 };

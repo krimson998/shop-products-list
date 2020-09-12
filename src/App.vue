@@ -24,7 +24,7 @@
 
 <script>
 /* ajax функции для получения данных */
-import { getFirstList, getNextList } from './services/index.js';
+import { getFirstList, getNextList } from './api';
 import NavBar from './components/NavBar.vue';
 import ProductCard from './components/ProductCard.vue';
 export default {

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { buyMockupRequest } from '../api';
 export default {
   props: {
     imgURL: String,
@@ -52,17 +52,10 @@ export default {
     buy() {
       this.isClicked = true;
       console.log(this.id);
-      axios
-        .get('https://reqres.in/api/products/3')
-        .then((response) => {
-          console.log(response.data);
-          this.buttonText = 'Product in cart';
-          this.isClicked = false;
-          this.inCart = true;
-        })
-        .catch((e) => {
-          return e;
-        });
+      buyMockupRequest();
+      this.buttonText = 'Product in cart';
+      this.isClicked = false;
+      this.inCart = true;
       this.saveItem();
     },
     /* Сохранение корзины в localstorage */
@@ -72,8 +65,8 @@ export default {
     },
     /* Проверка на наличие объекта в корзине */
     isCartItem() {
-      const a = this.cart.some((i) => i === this.id);
-      return a;
+      const cartItem = this.cart.some((i) => i === this.id);
+      return cartItem;
     },
   },
   computed: {
