@@ -1,4 +1,3 @@
-/* import {getFirstList} from '../../api/index' */
 import axios from 'axios';
 
 export default {
@@ -7,12 +6,6 @@ export default {
     startListItem: 50,
     endListItem: 100,
     showLoader: false,
-    buttonText: 'Buy',
-    isClicked: false,
-    inCart: false,
-    cart: {
-      items: [],
-    },
   },
   actions: {
     async firstList(ctx) {

@@ -34,13 +34,12 @@ export default {
     NavBar,
   },
   computed: mapGetters(['allProducts', 'showLoader']),
-
   async mounted() {
     this.firstList();
     this.scroll();
   },
   methods: {
-    ...mapActions(['firstList', 'fetchNextList', 'scroll']),
+    ...mapActions(['firstList', 'scroll']),
   },
 };
 </script>
