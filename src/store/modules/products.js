@@ -23,6 +23,7 @@ export default {
     },
     async fetchNextList({ commit, getters }) {
       try {
+        commit('loaderOn');
         const res = await axios.get(
           'https://jsonplaceholder.typicode.com/photos'
         );
@@ -33,12 +34,13 @@ export default {
         );
         commit('updateList', newList);
         commit('updateStartEndItems');
+        commit('loaderOff');
       } catch (e) {
         throw new Error(e);
       }
     },
     /* Функция которая детектит когда юзер скролит к нижнему значению страницы и возвращает true */
-    scroll({ dispatch, commit }) {
+    scroll({ dispatch }) {
       window.onscroll = () => {
         let bottomOfWindow =
           Math.max(
@@ -51,10 +53,7 @@ export default {
 
         if (bottomOfWindow) {
           /* Если юзер находится снизу страницы, происходит запрос на следующие 50 продуктов */
-          commit('loaderOn');
           dispatch('fetchNextList');
-        } else {
-          commit('loaderOff');
         }
       };
     },
