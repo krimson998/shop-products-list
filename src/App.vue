@@ -6,7 +6,7 @@
         <div class="items-container">
           <!-- Передача всех данных в компонент -->
           <ProductCard
-            v-for="product in productsList"
+            v-for="product in allProducts"
             :key="product.id"
             :title="product.title"
             :imgURL="product.thumbnailUrl"
@@ -24,7 +24,8 @@
 
 <script>
 /* ajax функции для получения данных */
-import { getFirstList, getNextList } from './api';
+
+import { mapGetters, mapActions } from 'vuex';
 import NavBar from './components/NavBar.vue';
 import ProductCard from './components/ProductCard.vue';
 export default {
@@ -32,48 +33,14 @@ export default {
     ProductCard,
     NavBar,
   },
+  computed: mapGetters(['allProducts', 'showLoader']),
 
-  data() {
-    return {
-      productsList: [],
-      startListItem: 50,
-      endListItem: 100,
-      showLoader: false,
-    };
-  },
   async mounted() {
+    this.firstList();
     this.scroll();
-    this.productsList = await getFirstList();
   },
   methods: {
-    /* Функция которая детектит когда юзер скролит к нижнему значению страницы и возвращает true */
-    scroll() {
-      window.onscroll = () => {
-        let bottomOfWindow =
-          Math.max(
-            window.pageYOffset,
-            document.documentElement.scrollTop,
-            document.body.scrollTop
-          ) +
-            window.innerHeight ===
-          document.documentElement.offsetHeight;
-
-        if (bottomOfWindow) {
-          /* Если юзер находится снизу страницы, происходит запрос на следующие 50 продуктов */
-          this.showLoader = true;
-          const newItems = async () => {
-            this.productsList = [
-              ...this.productsList,
-              ...(await getNextList(this.startListItem, this.endListItem)),
-            ];
-            this.startListItem += 50;
-            this.endListItem += 50;
-            this.showLoader = false;
-          };
-          newItems();
-        }
-      };
-    },
+    ...mapActions(['firstList', 'fetchNextList', 'scroll']),
   },
 };
 </script>
